@@ -23,7 +23,9 @@
                     <td>{{ $survey->title }}</td>
                     <td>{{ $survey->description }}</td>
                     <td>
-                        <a href="{{ route('surveys.show', $survey) }}" class="btn btn-info">View</a>
+                    <a href="{{ route('surveys.public', $survey->token) }}" class="btn btn-info">Public Link</a>    
+                    <a href="{{ route('surveys.show', $survey) }}" class="btn btn-info">View</a>
+
                         <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-warning">Edit</a>
                         <form action="{{ route('surveys.destroy', $survey) }}" method="POST" style="display:inline;">
                             @csrf

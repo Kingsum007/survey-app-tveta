@@ -21,7 +21,7 @@
             <td>{{ $response->id }}</td>
             <td>
                 @php
-                    $answers = json_decode($response->answers, true); // Decode JSON
+                    $answers = $response->answers; //json_decode($response->answers,true); // Decode JSON
                 @endphp
                 @foreach($answers as $questionId => $answer)
                     <strong>Question ID {{ $questionId }}:</strong> {{ is_array($answer) ? implode(', ', $answer) : $answer }}<br>
