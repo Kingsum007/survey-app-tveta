@@ -11,7 +11,7 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::where('user_id', auth()->id())->get();
+        $surveys = Survey::all();
         return view('surveys.index', compact('surveys'));
     }
 

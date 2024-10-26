@@ -26,11 +26,12 @@
                     <a href="{{ route('surveys.public', $survey->token) }}" class="btn btn-info">Public Link</a>    
                     <a href="{{ route('surveys.show', $survey) }}" class="btn btn-info">View</a>
 
-                        <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-warning">Edit</a>
+                     @if(auth()->id() == $survey->user_id)   <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-warning">Edit</a> @else  @endif
                         <form action="{{ route('surveys.destroy', $survey) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            @if(auth()->id() == $survey->user_id)    <button type="submit" class="btn btn-danger">Delete</button>@else 
+                             @endif
                         </form>
                     </td>
                 </tr>

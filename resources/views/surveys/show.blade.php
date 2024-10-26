@@ -5,9 +5,11 @@
 <div class="container">
     <h1>{{ $survey->title }}</h1>
     <p>{{ $survey->description }}</p>
-
+@if(auth()->id() == $survey->user_id)
     <a href="{{ route('surveys.statistics', $survey) }}" class="btn btn-info">View Statistics</a>
     <a href="{{ route('surveys.responses', $survey) }}" class="btn btn-info">View Responses</a>
+    @else
+    @endif
     <form action="{{ route('responses.store', $survey) }}" method="POST">
         @csrf
         @foreach ($survey->questions as $question)
