@@ -20,8 +20,8 @@
         <tbody>
             @foreach($surveys as $survey)
                 <tr>
-                    <td>{{ $survey->title }}</td>
-                    <td>{{ $survey->description }}</td>
+                    <td>{{ Str::limit($survey->title,30,'...') }}</td>
+                    <td>{{ Str::limit($survey->description.'...',50,'...') }}</td>
                     <td>
                     <a href="{{ route('surveys.public', $survey->token) }}" class="btn btn-info">Public Link</a>    
                     <a href="{{ route('surveys.show', $survey) }}" class="btn btn-info">View</a>
