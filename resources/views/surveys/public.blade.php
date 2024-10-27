@@ -23,12 +23,12 @@
                 @elseif ($question['question_type'] === 'checkbox')
                     @foreach (json_decode($question['options']) as $option)
                         <div>
-                            <input type="checkbox" name="answers[{{ $question->id }}][]" value="{{ $option }}">
+                            <input type="checkbox" name="answers[{{ $question['id'] }}][]" value="{{ $option }}">
                             <label>{{ $option }}</label>
                         </div>
                     @endforeach
                 @elseif ($question['question_type'] === 'dropdown')
-                    <select name="answers[{{ $question->id }}]" class="form-control">
+                    <select name="answers[{{ $question['id'] }}]" class="form-control">
                         @foreach (json_decode($question['options']) as $option)
                             <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach

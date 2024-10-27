@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Models\Response;
 use Str;
 
 class SurveyController extends Controller
@@ -149,6 +150,12 @@ class SurveyController extends Controller
 
         return view('surveys.public', compact('survey','questions'));
     }
-
+    public function destroy($survey)
+    {
+         Survey::where('id',$survey)->delete();
+         Question::where('survey_id',$survey)->delete();
+         Response::where('survey_id',$survey)->delete();
+         return redirect()->back()->with('success','Survey Deleted Successfully');
+    }
 
 }
