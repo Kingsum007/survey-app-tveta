@@ -66,40 +66,66 @@ class SurveyController extends Controller
 
         return view('surveys.responses', compact('survey', 'responses'));
     }
-    public function update(Request $request, Survey $survey)
+    // public function update(Request $request, Survey $survey)
+    // {
+    //     $validated = $request->validate([
+    //         'title' => 'required|string',
+    //         'description' => 'nullable|string',
+    //         'questions.*.question_text' => 'required|string',
+    //         'questions.*.question_type' => 'required|string',
+    //         'questions.*.options' => 'nullable|string', // Assuming options are passed as a string
+    //     ]);
+
+    //     // Update the survey
+    //     $survey->update([
+    //         'title' => $validated['title'],
+    //         'description' => $validated['description'],
+    //     ]);
+
+    //     // Update or create questions
+    //     foreach ($validated['questions'] as $index => $question) {
+    //         $options = json_encode(array_filter(explode(',', $question['options']))); // Converts comma-separated options to array and then encodes
+
+    //         // Update existing question or create a new one
+    //         $survey->questions()->updateOrCreate(
+    //             ['id' => $question['id']], // Make sure to have question ID in your input if updating
+    //             [
+    //                 'question_text' => $question['question_text'],
+    //                 'question_type' => $question['question_type'],
+    //                 'options' => $options,
+    //             ]
+    //         );
+    //     }
+
+    //     return redirect()->route('surveys.index')->with('success', 'Survey updated successfully!');
+    // }
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string',
+        // Validate the request if necessary
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
             'questions.*.question_text' => 'required|string',
             'questions.*.question_type' => 'required|string',
-            'questions.*.options' => 'nullable|string', // Assuming options are passed as a string
+            'questions.*.options' => 'nullable|string', // Adjust as needed
         ]);
-
-        // Update the survey
-        $survey->update([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-        ]);
-
-        // Update or create questions
-        foreach ($validated['questions'] as $index => $question) {
-            $options = json_encode(array_filter(explode(',', $question['options']))); // Converts comma-separated options to array and then encodes
-
-            // Update existing question or create a new one
-            $survey->questions()->updateOrCreate(
-                ['id' => $question['id']], // Make sure to have question ID in your input if updating
-                [
-                    'question_text' => $question['question_text'],
-                    'question_type' => $question['question_type'],
-                    'options' => $options,
-                ]
-            );
+    
+        // Find the survey
+        $survey = Survey::findOrFail($id);
+        $survey->update($validatedData);
+    
+        // Update questions
+        foreach ($request->input('questions') as $questionId => $questionData) {
+            // Check if question ID is valid
+            if (isset($questionData['question_text'])) {
+                $question = Question::findOrFail($questionId);
+                $question->update($questionData);
+            }
         }
-
-        return redirect()->route('surveys.index')->with('success', 'Survey updated successfully!');
+    
+        return redirect()->route('surveys.edit', $id)->with('success', 'Survey updated successfully!');
     }
-
+    
     public function showStatistics(Survey $survey)
     {
         // Fetch all responses related to the survey
@@ -156,6 +182,12 @@ class SurveyController extends Controller
          Question::where('survey_id',$survey)->delete();
          Response::where('survey_id',$survey)->delete();
          return redirect()->back()->with('success','Survey Deleted Successfully');
+    }
+    public function edit($id)
+    {
+        $survey = Survey::with('questions')->findOrFail($id);
+  
+        return view('surveys.edit',compact('survey')); 
     }
 
 }
