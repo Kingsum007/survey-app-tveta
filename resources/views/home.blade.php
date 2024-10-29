@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <h3>Welcome to Technical and Vocational Education and Training Authority Survey App</h3>
-    <p>Create and manage surveys easily!</p>
-    <a href="{{ route('surveys.create') }}" class="btn btn-primary">Create a Survey</a>
+    <h3>{{__('message.welcome')}}</h3>
+    <p>{{__('message.information')}}</p>
+    <a href="{{ route('surveys.create') }}" class="btn btn-primary">{{__('message.create')}}</a>
 </div>
 @endsection

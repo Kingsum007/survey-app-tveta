@@ -7,8 +7,8 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::resource('surveys', SurveyController::class);
     Route::post('surveys/{survey}/responses', [ResponseController::class, 'store'])->name('responses.store');
-
 });
+Route::get('/survey-list',[SurveyController::class, 'index'])->name('survey-list');
 
 // About and Home Routes
 Route::view('/', 'home')->name('home');
