@@ -66,39 +66,7 @@ class SurveyController extends Controller
 
         return view('surveys.responses', compact('survey', 'responses'));
     }
-    // public function update(Request $request, Survey $survey)
-    // {
-    //     $validated = $request->validate([
-    //         'title' => 'required|string',
-    //         'description' => 'nullable|string',
-    //         'questions.*.question_text' => 'required|string',
-    //         'questions.*.question_type' => 'required|string',
-    //         'questions.*.options' => 'nullable|string', // Assuming options are passed as a string
-    //     ]);
-
-    //     // Update the survey
-    //     $survey->update([
-    //         'title' => $validated['title'],
-    //         'description' => $validated['description'],
-    //     ]);
-
-    //     // Update or create questions
-    //     foreach ($validated['questions'] as $index => $question) {
-    //         $options = json_encode(array_filter(explode(',', $question['options']))); // Converts comma-separated options to array and then encodes
-
-    //         // Update existing question or create a new one
-    //         $survey->questions()->updateOrCreate(
-    //             ['id' => $question['id']], // Make sure to have question ID in your input if updating
-    //             [
-    //                 'question_text' => $question['question_text'],
-    //                 'question_type' => $question['question_type'],
-    //                 'options' => $options,
-    //             ]
-    //         );
-    //     }
-
-    //     return redirect()->route('surveys.index')->with('success', 'Survey updated successfully!');
-    // }
+   
     public function update(Request $request, $id)
     {
         // Validate the request if necessary
@@ -188,6 +156,10 @@ class SurveyController extends Controller
         $survey = Survey::with('questions')->findOrFail($id);
   
         return view('surveys.edit',compact('survey')); 
+    }
+    public function admin()
+    {
+        return view ('about');
     }
 
 }

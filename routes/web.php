@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ResponseController;
 Auth::routes();
@@ -17,4 +18,7 @@ Route::get('surveys/{survey}/responses', [SurveyController::class, 'showResponse
 Route::get('/surveys/{survey}/statistics', [SurveyController::class, 'showStatistics'])
     ->name('surveys.statistics');
 
-Route::get('/survey/{token}',[SurveyController::class,'showPublicSurvey'])->name('surveys.public');;
+Route::get('/survey/{token}',[SurveyController::class,'showPublicSurvey'])->name('surveys.public');
+Route::middleware(['auth'])->group(function(){
+    Route::resource('control',AdminController::class);
+});
