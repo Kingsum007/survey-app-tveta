@@ -21,4 +21,5 @@ Route::get('/surveys/{survey}/statistics', [SurveyController::class, 'showStatis
 Route::get('/survey/{token}',[SurveyController::class,'showPublicSurvey'])->name('surveys.public');
 Route::middleware(['auth'])->group(function(){
     Route::resource('control',AdminController::class);
+    Route::get('/control/surveys',[AdminController::class,'surveys'])->name('admin.surveys.index');
 });

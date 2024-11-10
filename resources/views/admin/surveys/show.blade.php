@@ -1,16 +1,15 @@
-@extends('layouts.app')
-
+@extends('admin.layouts.admin')
 @section('content')
 <div class="container">
     <h1>{{ $survey->title }}</h1>
     <p>{{ $survey->description }}</p>
 
     @if(auth()->id() == $survey->user_id)
-        <a href="{{ route('surveys.statistics', $survey) }}" class="btn btn-info">View Statistics</a>
-        <a href="{{ route('surveys.responses', $survey) }}" class="btn btn-info">View Responses</a>
+        <a href="{{ route('control.statistics', $survey) }}" class="btn btn-info">View Statistics</a>
+        <a href="{{ route('control.responses', $survey) }}" class="btn btn-info">View Responses</a>
     @endif
 
-    <form action="{{ route('responses.store', $survey) }}" method="POST" enctype="multipart/form-data">
+    <form action="/surveys/{{ $survey }}/responses" method="POST" enctype="multipart/form-data">
         @csrf
 
         @foreach ($survey->questions as $question)

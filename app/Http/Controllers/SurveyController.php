@@ -66,7 +66,7 @@ class SurveyController extends Controller
 
         return view('surveys.responses', compact('survey', 'responses'));
     }
-   
+
     public function update(Request $request, $id)
     {
         // Validate the request if necessary
@@ -77,11 +77,11 @@ class SurveyController extends Controller
             'questions.*.question_type' => 'required|string',
             'questions.*.options' => 'nullable|string', // Adjust as needed
         ]);
-    
+
         // Find the survey
         $survey = Survey::findOrFail($id);
         $survey->update($validatedData);
-    
+
         // Update questions
         foreach ($request->input('questions') as $questionId => $questionData) {
             // Check if question ID is valid
@@ -90,10 +90,10 @@ class SurveyController extends Controller
                 $question->update($questionData);
             }
         }
-    
+
         return redirect()->route('surveys.edit', $id)->with('success', 'Survey updated successfully!');
     }
-    
+
     public function showStatistics(Survey $survey)
     {
         // Fetch all responses related to the survey
@@ -139,27 +139,27 @@ class SurveyController extends Controller
     {
         $survey = Survey::where('token', $token)->firstOrFail();
 
-        $questions = json_decode($survey->questions,true);
-        
+        $questions = json_decode($survey->questions, true);
 
-        return view('surveys.public', compact('survey','questions'));
+
+        return view('surveys.public', compact('survey', 'questions'));
     }
     public function destroy($survey)
     {
-         Survey::where('id',$survey)->delete();
-         Question::where('survey_id',$survey)->delete();
-         Response::where('survey_id',$survey)->delete();
-         return redirect()->back()->with('success','Survey Deleted Successfully');
+        Survey::where('id', $survey)->delete();
+        Question::where('survey_id', $survey)->delete();
+        Response::where('survey_id', $survey)->delete();
+        return redirect()->back()->with('success', 'Survey Deleted Successfully');
     }
     public function edit($id)
     {
         $survey = Survey::with('questions')->findOrFail($id);
-  
-        return view('surveys.edit',compact('survey')); 
+
+        return view('surveys.edit', compact('survey'));
     }
     public function admin()
     {
-        return view ('about');
+        return view('about');
     }
 
 }

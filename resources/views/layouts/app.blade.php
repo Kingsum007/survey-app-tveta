@@ -11,23 +11,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css"
         integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
     <title>TVETA Survey Collection System</title>
-    <style>
-        /* For RTL direction */
-        [dir="rtl"] #languageDropdownContainer {
-            margin-left: 20px;
-            /* Override to make sure it stays on the left */
-            margin-right: auto;
-            /* Ensure no right margin */
-        }
-
-        /* Optional: Style adjustments for better spacing */
-        [dir="rtl"] .navbar-nav {
-            margin-right: 20px;
-            /* Ensure other nav items are on the right */
-            margin-left: auto;
-            /* Reset any left margin */
-        }
-    </style>
 </head>
 
 <body>

@@ -3,8 +3,11 @@
 @section('content')
 <div class="container">
     <h1>{{__('message.your-surveys')}}</h1>
+    @if(auth()->user('role') =="Admin")
     <a href="{{ route('surveys.create') }}" class="btn btn-primary mb-3">{{__('message.create')}}</a>
-
+   
+    @endif
+    
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif

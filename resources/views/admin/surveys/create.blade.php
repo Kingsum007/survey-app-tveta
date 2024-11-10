@@ -1,56 +1,78 @@
 @extends('admin.layouts.admin')
+
 @section('content')
-<h1>Create Survey</h1>
-<form action="{{ route('surveys.store') }}" method="POST" id="survey-form">
-    @csrf
-    <input type="text" class="form-control" name="title" placeholder="Survey Title" required>
-    <textarea class="form-control" id="details" name="description" placeholder="Description"></textarea>
+<div class="container">
+    <h1>{{__('message.create')}}</h1>
+    <form action="{{ route('control.store') }}" method="POST">
+        @csrf
 
-    <div id="questions-container">
-        <h3>Questions</h3>
-        <ul id="sortable">
-            <!-- Questions will be added here -->
-        </ul>
-    </div>
+        <!-- Survey Title -->
+        <div class="form-group">
+            <label for="title">{{__('message.survey_title')}}</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Enter Survey Title" required>
+        </div>
 
-    <button type="button" id="add-question">Add Question</button>
-    <button type="submit">Create Survey</button>
-</form>
+        <!-- Survey Description -->
+        <div class="form-group">
+            <label for="description">{{__('message.survey_description')}}</label>
+            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter Survey Description"></textarea>
+        </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sortable = new Sortable(document.getElementById('sortable'), {
-            animation: 150,
-            ghostClass: 'blue-background-class'
-        });
+        <div id="questions" class="mb-3">
+            <div class="question mb-3">
+                <label for="">{{__('message.question_text')}}</label>
+                <input type="text" class="form-control" name="questions[0][question_text]" placeholder="Question Text" required>
+                <label>{{__('message.question_type')}}</label>
+                <select class="form-control" name="questions[0][question_type]">
+                    <option value="text">{{__('message.text_type')}}</option>
+                    <option value="multiple_choice">{{__('message.multi_choice_type')}}</option>
+                    <option value="checkbox">{{__('message.check_type')}}</option>
+                    <option value="dropdown">{{__('message.dropdown_type')}}</option>
+                    <option value="file">{{__('message.file_type')}}</option>
+                </select>
+                {{__('message.question_options')}}
+                <input type="text" class="form-control" name="questions[0][options]" placeholder="Options (comma separated)">
+                <button type="button" class="btn btn-danger remove-question mt-2">Remove</button>
+            </div>
+        </div>
 
-        document.getElementById('add-question').addEventListener('click', function() {
-            const questionHtml = `
-                <li>
-                    <input type="text" class="form-control" name="questions[][question_text]" placeholder="Question" required>
-                    <select name="questions[][question_type]" class="form-control">
-                        <option value="text">Text</option>
-                        <option value="multiple_choice">Multiple Choice</option>
-                    </select>
-                    <div class="options-container">
-                        <input type="text" class="form-control" name="questions[][options][]" placeholder="Option (optional)">
-                    </div>
-                    <button type="button" class="add-option">Add Option</button>
-                    <button type="button" class="remove-question">Remove</button>
-                </li>
+        <button type="button" class="btn btn-primary" id="add-question">Add Question</button>
+        <button type="submit" class="btn btn-success">Create Survey</button>
+    </form>
+
+    <script>
+        let questionIndex = 1;
+
+        document.getElementById('add-question').onclick = function() {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question', 'mb-3');
+            questionDiv.innerHTML = `
+            <label>{{__('message.question_text')}}</label>
+        <input type="text" class="form-control" name="questions[${questionIndex}][question_text]" placeholder="Question Text" required>
+        
+        <label>{{__('message.question_type')}}</label>
+        <select class="form-control" name="questions[${questionIndex}][question_type]">
+            <option value="text">{{__('message.text_type')}}</option>
+            <option value="multiple_choice">{{__('message.multi_choice_type')}}</option>
+            <option value="checkbox">{{__('message.check_type')}}</option>
+            <option value="dropdown">{{__('message.dropdown_type')}}</option>
+            <option value="file">{{__('message.file_type')}}</option>
+        </select>
+
+        <label>{{__('message.question_options')}}</label>
+        <input type="text" class="form-control" name="questions[${questionIndex}][options]" placeholder="Options (comma separated)">
+
+        <button type="button" class="btn btn-danger remove-question mt-2">Remove</button>
             `;
-            document.getElementById('sortable').insertAdjacentHTML('beforeend', questionHtml);
-        });
+            document.getElementById('questions').appendChild(questionDiv);
+            questionIndex++;
+        };
 
-        document.getElementById('sortable').addEventListener('click', function(e) {
+        document.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-question')) {
-                e.target.closest('li').remove();
-            }
-            if (e.target.classList.contains('add-option')) {
-                const optionsContainer = e.target.previousElementSibling;
-                optionsContainer.insertAdjacentHTML('beforeend', '<input type="text" name="questions[][options][]" placeholder="Option (optional)">');
+                e.target.parentElement.remove();
             }
         });
-    });
-</script>
+    </script>
+</div>
 @endsection

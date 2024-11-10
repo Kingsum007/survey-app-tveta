@@ -48,18 +48,21 @@
             questionDiv.classList.add('question', 'mb-3');
             questionDiv.innerHTML = `
             <label>{{__('message.question_text')}}</label>
-                <input type="text" class="form-control" name="questions[${questionIndex}][question_text]" placeholder="Question Text" required>
-                <label>{{__('message.question_type')}}</label>
-                <select class="form-control" name="questions[${questionIndex}][question_type]">
-                     <option value="text">{{__('message.text_type')}}</option>
-                    <option value="multiple_choice">{{__('message.multi_choice_type')}}</option>
-                    <option value="checkbox">{{__('message.check_type')}}</option>
-                    <option value="dropdown">{{__('message.dropdown_type')}}</option>
-                    <option value="file">{{__('message.file_type')}}</option>
-                </select>
-                <label>{{__('message.question_options')}}</label>
-                <input type="text" class="form-control" name="questions[${questionIndex}][options]" placeholder="Options (comma separated)">
-                <button type="button" class="btn btn-danger remove-question mt-2">Remove</button>
+        <input type="text" class="form-control" name="questions[${questionIndex}][question_text]" placeholder="Question Text" required>
+        
+        <label>{{__('message.question_type')}}</label>
+        <select class="form-control" name="questions[${questionIndex}][question_type]">
+            <option value="text">{{__('message.text_type')}}</option>
+            <option value="multiple_choice">{{__('message.multi_choice_type')}}</option>
+            <option value="checkbox">{{__('message.check_type')}}</option>
+            <option value="dropdown">{{__('message.dropdown_type')}}</option>
+            <option value="file">{{__('message.file_type')}}</option>
+        </select>
+
+        <label>{{__('message.question_options')}}</label>
+        <input type="text" class="form-control" name="questions[${questionIndex}][options]" placeholder="Options (comma separated)">
+
+        <button type="button" class="btn btn-danger remove-question mt-2">Remove</button>
             `;
             document.getElementById('questions').appendChild(questionDiv);
             questionIndex++;
