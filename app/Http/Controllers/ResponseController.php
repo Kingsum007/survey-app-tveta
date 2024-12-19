@@ -45,9 +45,18 @@ class ResponseController extends Controller
     
             // Handle file upload
             if (isset($answer['file_upload']) && $answer['file_upload'] instanceof \Illuminate\Http\UploadedFile) {
-                $imageName = time() . '_' . $questionId . '.' . $answer['file_upload']->getClientOriginalExtension();
-                $answer['file_upload']->storeAs('images', $imageName, 'public');
-                $answers[$questionId] = 'storage/images/' . $imageName;
+                // Generate a unique file name
+                $fileName = time() . '_' . $questionId . '.' . $answer['file_upload']->getClientOriginalExtension();
+                
+                // Determine the folder based on file type
+                $extension = strtolower($answer['file_upload']->getClientOriginalExtension());
+                $folder = in_array($extension, ['jpg', 'jpeg', 'png', 'gif']) ? 'images' : 'documents';
+                
+                // Store the file
+                $answer['file_upload']->storeAs($folder, $fileName, 'public');
+                
+                // Save the relative file path
+                $answers[$questionId] = 'storage/' . $folder . '/' . $fileName;
             }
         }
     
