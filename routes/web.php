@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Middleware\AdminMiddleware;
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::resource('surveys', SurveyController::class);
@@ -23,3 +24,4 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('control',AdminController::class);
     Route::get('/control/surveys',[AdminController::class,'surveys'])->name('admin.surveys.index');
 });
+Route::get('/check',[AdminController::class, 'index']);

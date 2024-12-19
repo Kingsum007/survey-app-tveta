@@ -95,12 +95,26 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('admin.surveys.index')}}" class="nav-link">
+                <a href="{{route('control.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Index</p>
                 </a>
               </li>
-          
+              <li class="nav-item menu-open">
+                <a href="{{route('surveys.index') }}" class="nav-link active">
+                  <i class="nav-icon fas fa-book"></i>
+                  <p>
+                    Users
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('users.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Index</p>
+                    </a>
+                  </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

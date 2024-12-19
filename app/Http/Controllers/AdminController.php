@@ -15,8 +15,13 @@ class AdminController extends Controller
    
      public function index()
      {
-         $surveys = Survey::all();
-         return view('admin.surveys.index', compact('surveys'));
+        //  $surveys = Survey::all();
+        //  return view('admin.surveys.index', compact('surveys'));
+        if (class_exists(\App\Http\Middleware\AdminMiddleware::class)) {
+            dd('AdminMiddleware class exists');
+        } else {
+            dd('AdminMiddleware class does not exist');
+        }
      }
  
      public function create()
