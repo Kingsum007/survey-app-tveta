@@ -10,6 +10,7 @@ class ResponseController extends Controller
 {
     public function store(Request $request, $surveyId)
     {
+        try{
         $request->validate([
           'answers.*.file_upload' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,xlsx,docx,doc,pptx,ppt|max:2048',
             'answers.*.text' => 'nullable|string',
@@ -73,8 +74,16 @@ class ResponseController extends Controller
         ]);
     
         return redirect()->route('surveys.index')->with('success', 'Responses submitted successfully.');
+    } catch(\Exception $e)
+    {
+         // Log the error
+         \Log::error('Error while storing Response: ' . $e->getMessage());
+
+         // Optionally, return a response with error message
+         return back()->with('error', 'An error occurred while Storing the Response. Please try again later.');
     }
-    
+}
+
 
 }
 

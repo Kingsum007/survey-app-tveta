@@ -20,6 +20,7 @@
                             <a href="{{ route('surveys.show', $survey->id) }}" class="btn btn-primary">View Survey</a>
 
                             <!-- Show Edit and Delete buttons if the user is the creator -->
+                            @auth
                             @if(auth()->id() === $survey->user_id || auth()->user()->role ==="admin")
                                 <div class="mt-2">
                                     <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -31,6 +32,11 @@
                                     </form>
                                 </div>
                             @endif
+                            @endauth
+                            @guest
+                                
+                            @endguest
+
                         </div>
                     </div>
                 </div>
@@ -39,7 +45,7 @@
 
         <!-- Pagination with Fade-in effect -->
         <div class="d-flex justify-content-center" style="opacity: 0;">
-            {{ $surveys->links() }}
+            {{ $surveys->links('pagination::simple-bootstrap-5') }}
         </div>
     @endif
 </div>

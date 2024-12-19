@@ -54,7 +54,7 @@
 
     <!-- Pagination Links -->
     <div class="pagination-container">
-        {{ $responses->links() }} <!-- This will generate the pagination links -->
+        {{ $responses->links('pagination::simple-bootstrap-5') }} <!-- This will generate the pagination links -->
     </div>
     
     @endif

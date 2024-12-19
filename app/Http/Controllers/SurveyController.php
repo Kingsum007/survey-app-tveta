@@ -23,6 +23,7 @@ class SurveyController extends Controller
 
     public function store(Request $request)
     {
+        try{
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'nullable|string',
@@ -62,6 +63,14 @@ class SurveyController extends Controller
 
         return redirect()->route('surveys.index')->with('success', 'Survey created successfully!');
     }
+    catch (\Exception $e) {
+        // Log the error
+        \Log::error('Error while storing survey: ' . $e->getMessage());
+
+        // Optionally, return a response with error message
+        return back()->with('error', 'An error occurred while creating the survey. Please try again later.');
+    }
+}
 
 
     public function show(Survey $survey)
@@ -78,6 +87,7 @@ class SurveyController extends Controller
 
     public function update(Request $request, $id)
     {
+        try{
         // Validate the request if necessary
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -102,6 +112,14 @@ class SurveyController extends Controller
 
         return redirect()->route('surveys.edit', $id)->with('success', 'Survey updated successfully!');
     }
+    catch(\Exception $e){
+         // Log the error
+         \Log::error('Error while Updating survey: ' . $e->getMessage());
+
+         // Optionally, return a response with error message
+         return back()->with('error', 'An error occurred while creating the survey. Please try again later.');
+    }
+}
 
     public function showStatistics(Survey $survey)
     {
