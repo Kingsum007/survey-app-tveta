@@ -8,7 +8,12 @@ class Survey extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'title', 'description'];
+    protected $fillable = [
+        'title',
+        'description',
+        'image', // Add image to fillable
+    ];
+    
 
     // Define the relationship with Question
     public function questions()

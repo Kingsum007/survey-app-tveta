@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>{{__('message.create')}}</h1>
-    <form action="{{ route('surveys.store') }}" method="POST">
+    <form action="{{ route('surveys.store') }}" method="POST"  enctype="multipart/form-data">
         @csrf
 
         <!-- Survey Title -->
@@ -17,7 +17,10 @@
             <label for="description">{{__('message.survey_description')}}</label>
             <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter Survey Description"></textarea>
         </div>
-
+        <div class="form-group">
+            <label for="image">Survey Image</label>
+            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+        </div>
         <div id="questions" class="mb-3">
             <div class="question mb-3">
                 <label for="">{{__('message.question_text')}}</label>

@@ -11,6 +11,280 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css"
         integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
     <title>TVETA Survey Collection System</title>
+   <style>
+  /* Card Styling */
+.card {
+    position: relative;
+    margin: 20px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Image Styling */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effects */
+.card:hover {
+    transform: translateY(-10px);  /* Lift the card */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);  /* Enhance the shadow */
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);  /* Slight zoom on image */
+}
+
+/* Button Hover Effects */
+.btn {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #007bff;
+    transform: scale(1.1);  /* Slight grow effect */
+}
+
+/* Fade-In Effect on Card Load */
+.card {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Smooth transition for pagination */
+.d-flex.justify-content-center {
+    transition: opacity 0.5s ease;
+}
+
+/* Additional styling for the delete and edit buttons */
+.btn-sm {
+    margin-right: 5px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* General Survey Container */
+.survey-container {
+    padding: 40px 0;
+}
+
+.survey-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Question Card Styles */
+.card-question {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    padding: 20px;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+.card-question:hover {
+    transform: translateY(-5px); /* Lift the card */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhance shadow */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Question Text */
+.card-question h5 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+/* Options Layout (for multiple choice, checkboxes) */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.options-container label {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.options-container input {
+    margin-right: 10px;
+}
+
+/* Input Styling */
+textarea, input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* Survey Container */
+.container {
+    padding: 40px 15px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Question Card Styles */
+.card-question {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card-question:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Question Text */
+.card-question h5 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Button Styles */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    height: 10px;
+    background-color: #ddd;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #007bff;
+    width: 0;
+    transition: width 0.4s ease;
+}
+
+/* File Upload Preview */
+.file-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.file-preview img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+}
+
+.file-preview span {
+    font-size: 1rem;
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+</style>
 </head>
 
 <body>

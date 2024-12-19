@@ -2,44 +2,53 @@
 
 @section('content')
 <div class="container">
-    <h1>{{__('message.your-surveys')}}</h1>
-    @if(auth()->user('role') =="Admin")
-    <a href="{{ route('surveys.create') }}" class="btn btn-primary mb-3">{{__('message.create')}}</a>
-   
-    @endif
-    
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <h1>Surveys</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{{__('message.title')}}</th>
-                <th>{{__('message.description')}}</th>
-                <th>{{__('message.actions')}}</th>
-            </tr>
-        </thead>
-        <tbody>
+    @if($surveys->isEmpty())
+        <p>No surveys available.</p>
+    @else
+        <div class="row">
             @foreach($surveys as $survey)
-                <tr>
-                    <td>{{ Str::limit($survey->title,30,'...') }}</td>
-                    <td>{{ Str::limit($survey->description.'...',50,'...') }}</td>
-                    <td>
-                    <a href="{{ route('surveys.public', $survey->token) }}" class="btn btn-info">{{__('message.public_link')}} </a>    
-                    <a href="{{ route('surveys.show', $survey) }}" class="btn btn-info">{{__('message.view')}}</a>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <!-- Image -->
+                        <img src="{{ asset('storage/' . $survey->image) }}" alt="Survey Image" class="card-img-top" style="max-height: 200px; object-fit: cover;">
 
-                     @if(auth()->id() == $survey->user_id)   <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-warning">{{__('message.edit')}}</a> @else  @endif
-                        <form action="{{ route('surveys.destroy', $survey) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            @if(auth()->id() == $survey->user_id)    <button type="submit" class="btn btn-danger">{{__('message.delete')}}</button>@else 
-                             @endif
-                        </form>
-                    </td>
-                </tr>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $survey->title }}</h5>
+                            <p class="card-text">{{ \Str::limit($survey->description, 100) }}</p>
+                            <a href="{{ route('surveys.show', $survey->id) }}" class="btn btn-primary">View Survey</a>
+
+                            <!-- Show Edit and Delete buttons if the user is the creator -->
+                            @if(auth()->id() === $survey->user_id || auth()->user()->role ==="admin")
+                                <div class="mt-2">
+                                    <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                                    <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this survey?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             @endforeach
-        </tbody>
-    </table>
+        </div>
+
+        <!-- Pagination with Fade-in effect -->
+        <div class="d-flex justify-content-center" style="opacity: 0;">
+            {{ $surveys->links() }}
+        </div>
+    @endif
 </div>
+
+<script>
+    // Smooth fade-in effect for the pagination links
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const paginationLinks = document.querySelector('.d-flex.justify-content-center');
+        paginationLinks.style.opacity = 1;
+    });
+</script>
 @endsection

@@ -25,29 +25,37 @@
                 <td>{{ $response->id }}</td>
                 <td>
                     @foreach ($answers as $questionId => $answer)
-    <div class="answer">
-        <strong>Question ID {{ $questionId }}:</strong>
+                    @php
+                        // Find the corresponding question text from the survey
+                        $question = $survey->questions->where('id', $questionId)->first();
+                    @endphp
+                    <div class="answer">
+                        <strong>{{ $question->question_text }}:</strong>
 
-        @if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $answer))
-            <!-- Image File: Display Thumbnail -->
-            <img src="{{ asset( $answer) }}" alt="Image" style="max-width: 200px; max-height: 200px; border-radius: 5px;">
+                        @if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $answer))
+                            <!-- Image File: Display Thumbnail -->
+                            <img src="{{ asset( $answer) }}" alt="Image" style="max-width: 200px; max-height: 200px; border-radius: 5px;">
 
-        @elseif (preg_match('/\.(pdf|docx|doc|xlsx|xls|pptx|ppt)$/i', $answer))
-            <!-- Document File: Display Download Link -->
-            <a href="{{ asset( $answer) }}" target="_blank">Download {{ pathinfo($answer, PATHINFO_BASENAME) }}</a>
-        @else
-            <!-- Other Non-Image, Non-Document File: Display as Text -->
-            <p>{{ $answer }}</p>
-        @endif
-    </div>
-@endforeach
-
+                        @elseif (preg_match('/\.(pdf|docx|doc|xlsx|xls|pptx|ppt)$/i', $answer))
+                            <!-- Document File: Display Download Link -->
+                            <a href="{{ asset( $answer) }}" target="_blank">Download {{ pathinfo($answer, PATHINFO_BASENAME) }}</a>
+                        @else
+                            <!-- Other Non-Image, Non-Document File: Display as Text -->
+                            <p>{{ $answer }}</p>
+                        @endif
+                    </div>
+                    @endforeach
                 </td>
                 <td>{{ $response->created_at }}</td>
             </tr>
-        @endforeach
+            @endforeach
         </tbody>
     </table>
+
+    <!-- Pagination Links -->
+    <div class="pagination-container">
+        {{ $responses->links() }} <!-- This will generate the pagination links -->
+    </div>
     
     @endif
 </div>

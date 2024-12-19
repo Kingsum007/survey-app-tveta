@@ -12,7 +12,7 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::all();
+        $surveys = Survey::orderBy('created_at','desc')->paginate(1);
         return view('surveys.index', compact('surveys'));
     }
 
@@ -28,8 +28,9 @@ class SurveyController extends Controller
             'description' => 'nullable|string',
             'questions.*.question_text' => 'required|string',
             'questions.*.question_type' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'questions.*.options' => 'nullable|string', // Assuming options are passed as a string
-        ]);
+        ]); 
 
         // Create the survey
         $survey = new Survey();
@@ -39,6 +40,14 @@ class SurveyController extends Controller
         $survey->token = Str::random(32); // Generate a random token
         $survey->save();
 
+         // Handle image upload (if there's an image)
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension(); // Create a unique name for the image
+        $image->storeAs('survey_images', $imageName, 'public'); // Store the image in the public disk
+        $survey->image = 'survey_images/' . $imageName; // Save the image path to the database
+        $survey->save(); // Save the survey again with the image path
+    }
         // Loop through the questions and save them
         foreach ($validated['questions'] as $index => $question) {
             // Encode the options as JSON
@@ -59,11 +68,11 @@ class SurveyController extends Controller
     {
         return view('surveys.show', compact('survey'));
     }
-    public function showResponses(Survey $survey)
+    public function showResponses($surveyId)
     {
-        // Get responses for the survey
-        $responses = $survey->responses; // Ensure you define this relationship in the Survey model
-
+        $survey = Survey::with('questions')->findOrFail($surveyId); // Eager load questions
+        $responses = $survey->responses()->orderBy('created_at', 'desc')->paginate(1); // Paginate responses
+    
         return view('surveys.responses', compact('survey', 'responses'));
     }
 
