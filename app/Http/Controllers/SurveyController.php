@@ -12,7 +12,7 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::orderBy('created_at','desc')->paginate(1);
+        $surveys = Survey::orderBy('created_at','desc')->paginate(9);
         return view('surveys.index', compact('surveys'));
     }
 
@@ -80,7 +80,7 @@ class SurveyController extends Controller
     public function showResponses($surveyId)
     {
         $survey = Survey::with('questions')->findOrFail($surveyId); // Eager load questions
-        $responses = $survey->responses()->orderBy('created_at', 'desc')->paginate(1); // Paginate responses
+        $responses = $survey->responses()->orderBy('created_at', 'desc')->paginate(10); // Paginate responses
     
         return view('surveys.responses', compact('survey', 'responses'));
     }
