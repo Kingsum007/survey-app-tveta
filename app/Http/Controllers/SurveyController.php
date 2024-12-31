@@ -121,47 +121,76 @@ class SurveyController extends Controller
     }
 }
 
-    public function showStatistics(Survey $survey)
-    {
-        // Fetch all responses related to the survey
-        $responses = $survey->responses;
+public function showStatistics(Survey $survey )
+{
+    $responses = Response::all(); // Fetch the responses (replace with your own query)
+    $data = $this->calculateStatistics($responses);
 
-        // Process the responses for statistics
-        $statistics = $this->calculateStatistics($responses);
+    // Pass both statistics and questions to the view
+    return view('surveys.statistics', [
+        'survey' => $survey,
+        'statistics' => $data['statistics'],
+        'questions' => $data['questions'],
+    ]);
+}
 
-        return view('surveys.statistics', compact('survey', 'statistics'));
+private function calculateStatistics($responses)
+{
+    $statistics = [];
+    $questions = []; // Array to hold the questions
+
+    // Assuming you have a Question model or some way to get the questions by their IDs
+    $allQuestions = Question::all(); // Fetch all questions from the database (or replace this with your method of retrieving questions)
+
+    // Create a mapping of questionId to question text
+    foreach ($allQuestions as $question) {
+        $questions[$question->id] = $question->question_text; // Assuming 'id' and 'text' are the fields in the Question model
     }
 
-    private function calculateStatistics($responses)
-    {
-        $statistics = [];
+    foreach ($responses as $response) {
+        $answers = $response->answers; // Now you can access it as a property
 
-        foreach ($responses as $response) {
-            $answers = $response->answers; // Now you can access it as a property
+        // Check if the answers property is actually an array
+        if (!is_array($answers)) {
+            continue; // Skip this response if answers is not an array
+        }
 
-            foreach ($answers as $questionId => $answer) {
-                if (!isset($statistics[$questionId])) {
-                    $statistics[$questionId] = [
-                        'total' => 0,
-                        'counts' => [],
-                    ];
-                }
+        foreach ($answers as $questionId => $answer) {
+            // Initialize statistics for the question if it doesn't exist
+            if (!isset($statistics[$questionId])) {
+                $statistics[$questionId] = [
+                    'total' => 0,
+                    'counts' => [],
+                    'question_text' => $questions[$questionId] ?? 'Unknown Question', // Add question text
+                ];
+            }
 
-                $statistics[$questionId]['total']++;
+            $statistics[$questionId]['total']++;
 
-                // Count answers based on question type
-                if (is_array($answer)) {
-                    foreach ($answer as $item) {
+            // Count answers based on whether it's an array or a single value
+            if (is_array($answer)) {
+                foreach ($answer as $item) {
+                    // Ensure item is valid before counting
+                    if (!empty($item)) {
                         $statistics[$questionId]['counts'][$item] = ($statistics[$questionId]['counts'][$item] ?? 0) + 1;
                     }
-                } else {
+                }
+            } else {
+                // Ensure answer is valid before counting
+                if (!empty($answer)) {
                     $statistics[$questionId]['counts'][$answer] = ($statistics[$questionId]['counts'][$answer] ?? 0) + 1;
                 }
             }
         }
-
-        return $statistics;
     }
+
+    // Return statistics along with the questions
+    return [
+        'statistics' => $statistics,
+        'questions' => $questions,
+    ];
+}
+
     public function showPublicSurvey($token)
     {
         $survey = Survey::where('token', $token)->firstOrFail();

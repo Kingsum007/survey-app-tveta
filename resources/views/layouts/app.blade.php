@@ -13,9 +13,32 @@
         <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">
                 <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.css') }}">
                 <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.css') }}">
+                <link rel="stylesheet" href="{{ asset('admin/plugins/chart.js/Chart.css') }}">
+                <link rel="stylesheet" href="{{ asset('admin/plugins/chart.js/Chart.min.css') }}">
 
         <title>TVETA Survey Collection System</title>
    <style>
+    .charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.chart-block {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.chart-block h3 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
   /* Card Styling */
 .card {
     position: relative;
@@ -350,6 +373,14 @@ p {
     <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    {{-- <script src="{{ asset('admin/plugins/chart.js/Chart.bundle.js')}}"></script>
+    <script src="{{ asset('admin/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+    <script src="{{ asset('admin/plugins/chart.js/Chart.js')}}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
     <script>
           $(function() {
             $("#example1").DataTable({
